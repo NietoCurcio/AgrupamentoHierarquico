@@ -1,17 +1,15 @@
-// Biblioteca personalizada para arrays dinamicos, usada no arquivo questao5_v2.cpp
 #pragma once
 #include<iostream>
 
-// Professor, criei essa biblioteca para criar um array dinamico. O C++ possui a biblioteca "vector"
-// que faz isso, mas como não podia usar bibliotecas prontas, implementei essa p/ me ajudar
-// na minha logica.
+// A implementação de uma lista encadeada funcionou, porém o consumo de RAM ficou bem grande
+// e por isso, não foi possível finalizar o algoritmo. Portanto, mantive a versão usando realloc
 
 // referencias:
 // https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=msvc-160
 // http://www.cplusplus.com/doc/oldtutorial/templates/
 // https://www.hackerrank.com/challenges/c-class-templates/problem
 
-namespace MyDynamicArraySpace
+namespace MyDynamicArrayLkSpace
 {
     template<class T>
     class DynamicArray {
@@ -53,10 +51,6 @@ namespace MyDynamicArraySpace
         DynamicArray(int tamanho, T element) {
             for(int i = 0; i < tamanho; i++) 
                 push(element);
-                // preciso de um template specialization para bidimensional
-                // porque cada posição de array (que é um array), estaria apontando para o mesmo
-                // array, o que seria errado
-                // outra alternativa é dar um .push e adicionar um array de cada vez
         }
 
         T pop() {
@@ -80,7 +74,6 @@ namespace MyDynamicArraySpace
         }
     };
 
-    // template specialization
     template <class T2>
     class DynamicArray<DynamicArray<T2>> {
         DynamicArray<T2> data;

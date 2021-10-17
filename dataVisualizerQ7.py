@@ -11,10 +11,14 @@ with open('weightsMatrixFromDataset.csv', 'r') as f:
         A.append(row)
 A = np.array(A)
 print(A)
+print(A.shape)
 
 G = nx.from_numpy_matrix(A)
-nx.draw(G, with_labels=True)
+print("Graph from dataset")
+print(G)
+nx.draw_circular(G, with_labels=False) # "with_labels=False" para deixar a imagem mais limpa
 plt.savefig("GraphFromDataset.png", format="PNG")
+plt.clf()
 
 output = np.array([[0 for _ in range(500)] for _ in range(500)])
 with open('outputFromDataset.csv', 'r') as r:
@@ -27,6 +31,7 @@ with open('outputFromDataset.csv', 'r') as r:
         output[u][v] = 1
 
 outputGraph = nx.Graph(output)
+print("Graph output")
 print(outputGraph)
-nx.draw(outputGraph, with_labels=True)
+nx.draw_kamada_kawai(outputGraph, with_labels=False)
 plt.savefig("GraphOutput.png", format="PNG")

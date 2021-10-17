@@ -13,6 +13,11 @@ string getTag(string row) {
     return tag;
 }
 
+void mutableTest(int n[]) {
+  n[0] = 10;
+}
+
+
 int main (int argc, char *argv[]) {
   // for(int i = 0; i < argc; i++) {
   //   printf("%s\n", argv[i]);
@@ -29,4 +34,10 @@ int main (int argc, char *argv[]) {
     cout << row << endl;
   }
   MyReadFile.close();
+
+  int a[] = {1,2,3};
+  mutableTest(a);
+  for(int i = 0; i < 3; i++) {
+    printf("%d ", a[i]);
+  }
 }

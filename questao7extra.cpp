@@ -11,13 +11,13 @@
     Como os id's são definidos pelo dataset, houveram diversas adaptações no código.
 */ 
 #include<iostream> // Biblioteca padrao de entrada e saida
-#include "MyDynamicArray.h" // Essa biblioteca foi implementada por mim no arquivo MyDynamicArray.h
+#include "MyDynamicArrayRealloc.h" // Essa biblioteca foi implementada por mim no arquivo MyDynamicArrayRealloc.h
 #include <fstream> // Essa biblioteca é para leitura e escrita de arquivos
 #include <string> // Biblioteca necessaria para leitura de arquivos em c++ (função getline)
 #include <cmath> // Usada apenas na função sqrt(), para calcular a distancia euclideana.
 
 using namespace std;
-using namespace MyDynamicArraySpace;
+using namespace MyDynamicArrayReallocSpace;
 
 class Edge {
     public:
@@ -171,7 +171,7 @@ class Graph {
             return true;
         }
 
-        int getHeavierEdge(DynamicArray<bool> &N, DynamicArray<Edge> &edges) {
+        int getHeavierEdge(bool N[], DynamicArray<Edge> &edges) {
             int index;
             int greater = -1;
             int uId = -1;
@@ -186,19 +186,9 @@ class Graph {
         }
 
         void printConnected() {
-            // bool printed[nodes_length][nodes_length] = {{false}};
-            cout << "felipe" << endl;
-            DynamicArray<bool> explored(nodes_length, false);
-            cout << "felipe1" << endl;
-            cout << nodes_length << endl;
-            DynamicArray<DynamicArray<bool>> printed(nodes_length, DynamicArray<bool>(nodes_length, false));
-            // fre() printed;
-            cout << printed.length << endl;
-            cout << "felipe1.5" << endl;
+            bool printed[nodes_length][nodes_length] = {{false}};
+            bool explored[nodes_length] = {false};
             Node* first = nullptr;
-            cout << "felipe1.8" << endl;
-
-            cout << "felipe2" << endl;
             for(int i = 0; i < nodes.length; i++) {
                  if (nodes[i]->edges.length) {
                      first = nodes[i];
@@ -212,7 +202,6 @@ class Graph {
 
             // cout << "Componentes conexas de G:" << endl;
             ofstream WriteFile("outputFromDataset.csv");
-            cout << "felipe3" << endl;
             while(nodesToExplore.length > 0) {
                 Node* n = nodesToExplore.pop();
 
@@ -236,7 +225,6 @@ class Graph {
             }
             // cout << endl;
             WriteFile.close();
-            cout << "felipe10" << endl;
         }
 
         DynamicArray<DynamicArray<double>> getWeightMatrix() {
@@ -385,8 +373,8 @@ void insertEdges(Graph &G) {
             // ou seja, distancia entre dois vetores bidimensionais (idade e extroversao)
             Node* nodeu = G.getNode(uId);
             Node* nodev = G.getNode(vId);
-            double idadeDif = (nodeu->idade - nodev->idade);
-            double extroversaoDif = (nodeu->extroversao - nodev->extroversao);
+            double idadeDif = (nodeu->idade - nodev->idade)*10;
+            double extroversaoDif = (nodeu->extroversao - nodev->extroversao)*10;
             idadeDif *= idadeDif;
             extroversaoDif *= extroversaoDif;
             double euclideanDistance = sqrt(idadeDif + extroversaoDif);
@@ -428,8 +416,8 @@ int main(int argc, char* argv[]) {
 
     // G.printState();
 
-    DynamicArray<bool> N(edges.length, false);
-    cout << "Running algorithm, may take a few minutes..." << endl;
+    bool N[edges.length] = {false};
+    cout << "Running algorithm..." << endl;
     while(!G.isConnected()) {
         // no questao5e6_v2.cpp, os id's são iguais a seus indices,
         // o node de id 0, esta na posicao 0 de G.nodes, neste aqui o id não tem esse comportamento
@@ -438,7 +426,6 @@ int main(int argc, char* argv[]) {
         Edge e = edges[edgeIndex];
         Node* u = G.getNode(e.nodeIdU);
         Node* v = G.getNode(e.nodeIdV);
-        cout << "Eae3" << endl;
         G.pushEdge(e, u);
         G.pushEdge(e, v);
         N[edgeIndex] = true;

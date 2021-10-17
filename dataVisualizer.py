@@ -12,10 +12,12 @@ with open('weightsMatrix.csv', 'r') as f:
 
 A = np.array(A)
 print(A)
+print(A.shape)
 
 G = nx.from_numpy_matrix(A)
 nx.draw(G, with_labels=True)
 plt.savefig("Graph.png", format="PNG")
+plt.clf()
 
 output = np.array([[0 for _ in range(13)] for _ in range(13)])
 with open('output.csv', 'r') as r:
