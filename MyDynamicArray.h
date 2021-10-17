@@ -15,28 +15,44 @@ namespace MyDynamicArraySpace
 {
     template<class T>
     class DynamicArray {
-        T* array = (T*)calloc(0, sizeof(T));
+        private:
+            T data;
+            DynamicArray *prev;
+            DynamicArray *next;
+            DynamicArray *head;
+            DynamicArray *tail;
+
+            void insertNode(T object) {
+                DynamicArray* node = new DynamicArray;
+                node->data = object;
+                node->next = nullptr;
+
+                if(length == 1) {
+                    head = node;
+                    head->prev = nullptr;
+                    tail = head;
+                    return;
+                }
+
+                tail->next = node;
+                node->prev = tail;
+                tail = node;
+            }
+
         public:
             int length = 0;
-            // sizeof(array)/sizeof(*array) não funciona porque não se sabe o tamanho de array
-            // em tempo de compilação, como funcionaria com arrays estaticos, entao
-            // é preciso manter o estado do tamanho
 
         void push(T object) {
-            // printf("Felipe\n");
-            this->array = (T*)realloc(this->array, ((this->length + 1) * sizeof(T)));
             this->length++;
-            array[this->length - 1] = object;
+            insertNode(object);
         }
 
-        DynamicArray() {}
+        DynamicArray() {
+        }
 
-        // N(3, DynamicArray<bool>(3, false));
         DynamicArray(int tamanho, T element) {
-            this->array = (T*)realloc(this->array, ((this->length + tamanho) * sizeof(T)));
-            this->length = tamanho;
             for(int i = 0; i < tamanho; i++) 
-                this->array[i] = element;
+                push(element);
                 // preciso de um template specialization para bidimensional
                 // porque cada posição de array (que é um array), estaria apontando para o mesmo
                 // array, o que seria errado
@@ -44,51 +60,76 @@ namespace MyDynamicArraySpace
         }
 
         T pop() {
-            T item = array[this->length - 1];
-            this->length -= 1;
-            if (length == 0) {
-                delete[] array;
-                array = (T*)calloc(0, sizeof(T));
-            } 
-            return item;
+            T data = tail->data;
+            DynamicArray* tmp = tail->prev;
+            if(tmp) tmp->next = nullptr;
+            delete tail;
+            tail = tmp;
+            length--;
+            return data;
         }
 
         T& operator[](const int idx) {
-            return this->array[idx];
+            int i = 0;
+            DynamicArray* tmp = head;
+            for(tmp; tmp != nullptr && i < length; tmp = tmp->next) {
+                if(idx == i) break;
+                i++;
+            }
+            return tmp->data;
         }
     };
 
     // template specialization
     template <class T2>
-    class DynamicArray <DynamicArray<T2>> {
-        DynamicArray<T2>* array = (DynamicArray<T2>*)calloc(0, sizeof(DynamicArray<T2>));
+    class DynamicArray<DynamicArray<T2>> {
+        DynamicArray<T2> data;
+        DynamicArray<DynamicArray<T2>> *prev;
+        DynamicArray<DynamicArray<T2>> *next;
+        DynamicArray<DynamicArray<T2>> *head;
+        DynamicArray<DynamicArray<T2>> *tail;
+
         public:
             int length = 0;
 
             DynamicArray<T2>& operator[](const int idx) {
-                return this->array[idx];
+                int i = 0;
+                DynamicArray* tmp = head;
+                for(tmp; tmp != nullptr && i < length; tmp = tmp->next) {
+                    if(idx == i) break;
+                    i++;
+                }
+                return tmp->data;
             }
 
-            void push(DynamicArray<T2> ar) {
-                // printf("Felipe2\n");
-                this->array = (DynamicArray<T2>*)realloc(this->array, ((this->length + 1) * sizeof(DynamicArray<T2>)));
+            void insertNode(DynamicArray<T2> arr) {
+                DynamicArray<DynamicArray<T2>>* node = new DynamicArray<DynamicArray<T2>>;
+                node->data = arr;
+                node->next = nullptr;
+
+                if(length == 1) {
+                    head = node;
+                    head->prev = nullptr;
+                    tail = head;
+                    return;
+                }
+
+                tail->next = node;
+                node->prev = tail;
+                tail = node;
+            }
+
+            void push(DynamicArray<T2> arr) {
                 this->length++;
-                array[this->length - 1] = ar;
+                insertNode(arr);
             }
 
             DynamicArray() {}
 
             DynamicArray(int tamanho, DynamicArray<T2> arr) {
-                // printf("FELIPEEE\n");
-                this->array = (DynamicArray<T2>*)realloc(this->array, ((this->length + tamanho) * sizeof(DynamicArray<T2>)));
-                this->length = tamanho;
                 for(int i = 0; i < tamanho; i++) {
                     DynamicArray<T2> ar(arr.length, arr[0]);
-                    // cria um novo ponteiro a cada posição, dessa maneira cada posição é um ponteiro diferente
-                    // se tivesse feito array[i] = arr, diretamente, sem criar uma nova instancia,
-                    // ao alterar por exemplo a posição 1 de um array interno, alteraria a posição 1 de todos
-                    // os arrays internos
-                    array[i] = ar;
+                    push(ar);
                 }
             }
     };

@@ -3,29 +3,30 @@
 #include <string>
 using namespace std;
 
-int main () {
-  // Create a text file
-//   ofstream MyWriteFile("filename.txt");
+string getTag(string row) {
+    string tag = "";
+    int i = 1;
+    while(i < 5) {
+        tag += row[i];
+        i++;
+    } 
+    return tag;
+}
 
-  // Write to the file
-//   MyWriteFile << "Files can be tricky, but it is fun enough!";
- 
-  // Close the file
-//   MyWriteFile.close();
+int main (int argc, char *argv[]) {
+  // for(int i = 0; i < argc; i++) {
+  //   printf("%s\n", argv[i]);
+  // }
+  // ofstream MyWriteFile("filename.csv");
+  // MyWriteFile << 0.0000000000002;
+  // MyWriteFile.close();
 
-  // Create a text string, which is used to output the text file
   string myText;
-
-  // Read from the text file
   ifstream MyReadFile("teste.graphml");
 
-  // Use a while loop together with the getline() function to read the file line by line
   while (getline (MyReadFile, myText)) {
-    // Output the text from the file
-    cout << myText << endl;
-    cout << "FELIPE" << endl; 
+    string row = getTag(myText);
+    cout << row << endl;
   }
-
-  // Close the file
   MyReadFile.close();
 }

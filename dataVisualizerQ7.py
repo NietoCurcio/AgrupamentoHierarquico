@@ -4,23 +4,22 @@ import matplotlib.pyplot as plt
 import csv
 
 A = []
-with open('weightsMatrix.csv', 'r') as f:
+with open('weightsMatrixFromDataset.csv', 'r') as f:
     reader = csv.reader(f, delimiter=',')
     for r in reader:
-        row = list(map(int, r))
+        row = list(map(float, r))
         A.append(row)
-
 A = np.array(A)
 print(A)
 
 G = nx.from_numpy_matrix(A)
 nx.draw(G, with_labels=True)
-plt.savefig("Graph.png", format="PNG")
+plt.savefig("GraphFromDataset.png", format="PNG")
 
-output = np.array([[0 for _ in range(13)] for _ in range(13)])
-with open('output.csv', 'r') as r:
-    reader, = csv.reader(r, delimiter=',')
-    # print(reader)
+output = np.array([[0 for _ in range(500)] for _ in range(500)])
+with open('outputFromDataset.csv', 'r') as r:
+    reader = csv.reader(r, delimiter=',')
+    reader = next(reader)
     for r in reader:
         if not r:
             continue

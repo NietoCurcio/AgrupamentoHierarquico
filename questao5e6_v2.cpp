@@ -43,7 +43,7 @@ class Node {
             this->edges.push(e);
         }
 
-        bool someEdgeConnectedTo(int nodeIdV) {
+        bool hasEdgeConnectedTo(int nodeIdV) {
             DynamicArray<Edge> es = edges;
             for(int i = 0; i < edges.length; i++) {
                 Edge e = es[i];
@@ -88,6 +88,10 @@ class Graph {
 
         void insertEdge(Node* a, Node* b, int weight) {
             a->connect(b, weight);
+        }
+
+        void pushEdge(Edge e, Node* u) {
+            u->edges.push(e);
         }
 
         bool isConnected() {
@@ -197,9 +201,9 @@ class Graph {
             DynamicArray<DynamicArray<int>> n(nodes_length, DynamicArray<int>(nodes_length, 0));
             for(int i = 0; i < nodes_length; i++) {
                 int k = 0;
-                Node* node = this->getNode(i);
+                Node* node = this->nodes[i];
                 for(int j = 0; j < nodes_length; j++) {
-                    if(node->someEdgeConnectedTo(j)) {
+                    if(node->hasEdgeConnectedTo(j)) {
                         Edge e = node->getEdgeConnectedTo(j);
                         int w = e.weight;
                         n[i][j] = w;
@@ -222,15 +226,17 @@ class Graph {
 
         void printState() {
             for(int i = 0; i < nodes_length; i++) {
-                cout << "Id: " << getNode(i)->id << endl;
-                    for(int j = 0; j < getNode(i)->edges.length; j++) {
-                        printf(
-                            "%d --%d-> %d |",
-                            getNode(i)->edges[j].nodeIdU,
-                            getNode(i)->edges[j].weight,
-                            getNode(i)->edges[j].nodeIdV
-                            );
-                    }
+                Node* n = nodes[i];
+                cout << "Id: " << n->id << endl;
+                cout << "Edges length: " << n->edges.length << endl;
+                for(int j = 0; j < n->edges.length; j++) {
+                    printf(
+                        "%d --%d-> %d | ",
+                        n->edges[j].nodeIdU,
+                        n->edges[j].weight,
+                        n->edges[j].nodeIdV
+                        );
+                }
                 cout << endl;
             }
         }
@@ -313,7 +319,7 @@ int main(int argc, char* argv[]) {
     // for debugging, print state
     G.printState();
 
-    ofstream MyFile("adjacencyMatrix.csv");
+    ofstream MyFile("weightsMatrix.csv");
 
     DynamicArray<DynamicArray<int>> matrix = G.getWeightMatrix();
     cout << "Weights Matrix:" << endl;
@@ -339,7 +345,8 @@ int main(int argc, char* argv[]) {
         Edge e = G.getHeavierEdge(N, matrix); // pega maior peso não utilizado
         Node* u = G.getNode(e.nodeIdU);
         Node* v = G.getNode(e.nodeIdV);
-        G.insertEdge(u, v, e.weight);
+        G.pushEdge(e, u);
+        G.pushEdge(e, v);
         N[e.nodeIdU][e.nodeIdV] = true;
         G.printConnected();
         // printa sem repetir por ser nao direcionado, ou seja:
