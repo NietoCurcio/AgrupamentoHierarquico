@@ -3,7 +3,7 @@
 
     Este codigo implementa o mesmo algoritmo da questao 5 e 6,
     mas neste é possivel inserir valor pra extroversao e idade em cada node,
-    também é calculado a distancia euclideana como peso para cada aresta (ver função insertEdges).
+    também é calculado a distancia euclidiana como peso para cada aresta (ver função insertEdges).
     
     A função "void insertEdges(Graph &G);"
     insere as arestas fazendo a leitura do dataset MQD500.graphml.
@@ -11,12 +11,14 @@
     Como os id's são definidos pelo dataset, houveram diversas adaptações no código.
 */ 
 #include<iostream> // Biblioteca padrao de entrada e saida
+// #include "MyDynamicArrayLk.h" // Essa biblioteca foi implementada por mim no arquivo MyDynamicArrayRealloc.h
 #include "MyDynamicArrayRealloc.h" // Essa biblioteca foi implementada por mim no arquivo MyDynamicArrayRealloc.h
 #include <fstream> // Essa biblioteca é para leitura e escrita de arquivos
 #include <string> // Biblioteca necessaria para leitura de arquivos em c++ (função getline)
-#include <cmath> // Usada apenas na função sqrt(), para calcular a distancia euclideana.
+#include <cmath> // Usada apenas na função sqrt(), para calcular a distancia euclidiana.
 
 using namespace std;
+// using namespace MyDynamicArrayLkSpace;
 using namespace MyDynamicArrayReallocSpace;
 
 class Edge {
@@ -176,15 +178,14 @@ class Graph {
                 for(int i = 0; i < edges.length; i++) {
                     int u = edges[i].nodeIdU;
                     int v = edges[i].nodeIdV;
-                    int getId = (n->id != u) ? u : v;
-                    if(n->id != u) cout << "MAMAE" << endl;
-                    Node* nodeEdge = this->getNode(getId);
+                    Node* nodeEdge = this->getNode(v);
                     nodesToExplore.push(nodeEdge);
                 }
             }
 
             for(int i = 0; i < explored.length; i++) {
                 if(!explored[i]) return false;
+                
             }
             // explored.clear(); // only for MyDynamicArrayLk
             return true;
@@ -260,7 +261,11 @@ class Graph {
                     if(edgeIndex != -1) {
                         Edge e = node->edges[edgeIndex];
                         n[i][j] = e.weight;
-                        if(n[i][j] == 0) n[i][j] = 0.001;
+                        // if(n[i][j] == 0) n[i][j] = 0.0001;
+                        // visto que entrei no "if", há a aresta, mas o peso é 0 
+                        // por ser a distancia euclidiana, significa que sao dois vértices próximos
+                        // então coloco um valor próximo de 0, para que o código em python
+                        // entenda que a aresta existe.
                         k++;
                     }
                     if(k == node->edges.length) break;
@@ -403,6 +408,14 @@ void insertEdges(Graph &G) {
             idadeDif *= idadeDif;
             extroversaoDif *= extroversaoDif;
             double euclideanDistance = sqrt(idadeDif + extroversaoDif);
+            // coloco como peso o inverso da distancia euclidiana, pois, se os nodes
+            // são próximos sua distancia é zero, e pelo algoritmo de agrupamento hierarquico
+            // eu preciso pegar a aresta de o maior peso (relação mais forte). Da mesma forma,
+            // se a distancia é um grande valor, seu inverso é um valor menor, que indica
+            // uma relação fraca.
+            if(euclideanDistance == 0) euclideanDistance = 1 / 0.0001;
+            else euclideanDistance = 1 / euclideanDistance;
+            // Se for 0, normalizo como 0.0001, para calcular seu inverso
             G.insertEdge(nodeu, nodev, euclideanDistance);
             G.insertEdge(nodev, nodeu, euclideanDistance);
         }
@@ -434,7 +447,7 @@ int main(int argc, char* argv[]) {
         // cout << "\n";
     }
     MyFile.close();
-    // matrix.clear(); only for MyDynamicArrayLk
+    // matrix.clear(); //only for MyDynamicArrayLk
     cout << "Weights Matrix generated" << endl;
 
     DynamicArray<Edge> edges = G.clearEdges();
@@ -444,6 +457,7 @@ int main(int argc, char* argv[]) {
 
     bool* N = new bool[edges.length]{};
     cout << "Running algorithm..." << endl;
+    int z = 0;
     while(!G.isConnected()) {
         // no questao5e6_v2.cpp, os id's são iguais a seus indices,
         // o node de id 0, esta na posicao 0 de G.nodes, neste aqui o id não tem esse comportamento
@@ -453,8 +467,11 @@ int main(int argc, char* argv[]) {
         G.insertEdge(G.getNode(e.nodeIdU), G.getNode(e.nodeIdV), e);
         G.insertEdge(G.getNode(e.nodeIdV), G.getNode(e.nodeIdU), e);
         N[edgeIndex] = true;
-        G.printConnected();
+        z++;
+        cout << z << endl;
     }
+    G.printConnected();
+
     cout << "Output generated" << endl;
     // G.printState();
     delete[] N;

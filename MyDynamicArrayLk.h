@@ -1,9 +1,6 @@
 #pragma once
 #include<iostream>
 
-// A implementação de uma lista encadeada funcionou, porém o consumo de RAM ficou bem grande
-// e por isso, não foi possível finalizar o algoritmo. Portanto, mantive a versão usando realloc
-
 // referencias:
 // https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=msvc-160
 // http://www.cplusplus.com/doc/oldtutorial/templates/
@@ -105,7 +102,8 @@ namespace MyDynamicArrayLkSpace
 
             DynamicArray<T2>& operator[](const int idx) {
                 int i = 0;
-                DynamicArray* tmp = head;
+                // DynamicArray* tmp = head;
+                DynamicArray<DynamicArray<T2>>* tmp = head;
                 for(tmp; tmp != nullptr && i < length; tmp = tmp->next) {
                     if(idx == i) break;
                     i++;

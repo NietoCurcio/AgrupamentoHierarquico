@@ -1,10 +1,11 @@
-// arquivo de teste da biblioteca personalizada
+// arquivo de teste das bibliotecas personalizadas
 #include "MyDynamicArrayLk.h"
+// #include "MyDynamicArrayRealloc.h"
 #include <iostream>
-#include <vector>
 
 using namespace std;
 using namespace MyDynamicArrayLkSpace;
+// using namespace MyDynamicArrayReallocpace;
 
 void create1(int length) {
     DynamicArray<bool> printed;
@@ -34,7 +35,7 @@ void create4(int length) {
 }
 
 int main() {
-    DynamicArray<int> array(2, 1);
+    DynamicArray<int> array(3, 1);
     array.push(1);
     array[0] = 10;
     array.pop();
