@@ -137,21 +137,12 @@ class Graph {
                     nodesToExplore.push(nodeEdge);
                 }
             }
-            int entrei=0;
             for(int i = 0; i < explored.length; i++) {
-                if(!explored[i]) {
-                //     return false;
-                    entrei = 1;
-                } 
-                cout << explored[i] << " ";
+                if(!explored[i]) return false;
                 // for test only, commented
                 // if(explored[i]) printf("true\n");
                 // else printf("false\n");
             }
-                cout << endl << nodes[0]->edges.length << endl;
-                printState();
-
-            if(entrei) return false;
             // explored.clear(); only for MyDynamicArrayLk
             return true;
         }
@@ -397,6 +388,5 @@ int main(int argc, char* argv[]) {
         // printa sem repetir por ser nao direcionado, ou seja:
         // se do node 0 eu vou pro 2, portanto do 2 para 0, mas apenas escreve 0-->2 ou 2-->0 (dependendo de onde começou)
     }
-    G.printState();
     return 0;
 }
