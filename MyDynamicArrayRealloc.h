@@ -2,9 +2,7 @@
 #pragma once
 #include<iostream>
 
-// Professor, criei essa biblioteca para criar um array dinamico. O C++ possui a biblioteca "vector"
-// que faz isso, mas como não podia usar bibliotecas prontas, implementei essa p/ me ajudar
-// na minha logica.
+// Professor, criei essa biblioteca para criar um array dinamico.
 
 // referencias:
 // https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=msvc-160
@@ -16,6 +14,8 @@ namespace MyDynamicArrayReallocSpace
     template<class T>
     class DynamicArray {
         T* array = (T*)calloc(0, sizeof(T));
+        // T* t = std::allocator<T>.allocate(size) e T* t = new[T] do C++ também funcionam
+
         public:
             int length = 0;
             // sizeof(array)/sizeof(*array) não funciona porque não se sabe o tamanho de array
@@ -47,7 +47,8 @@ namespace MyDynamicArrayReallocSpace
             T item = array[this->length - 1];
             this->length -= 1;
             if (length == 0) {
-                delete[] array;
+                // delete[] array;, onlyr for "new" keyword
+                free(array);
                 array = (T*)calloc(0, sizeof(T));
             } 
             return item;

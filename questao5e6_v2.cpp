@@ -5,7 +5,7 @@
 #include <fstream> // Essa biblioteca é apenas para leitura e escrita de arquivos
 
 using namespace std;
-using namespace MyDynamicArraySpace;
+using namespace MyDynamicArrayReallocSpace;
 
 class Edge {
     public:
@@ -40,6 +40,16 @@ class Node {
             e.setWeight(weight);
             e.setNodeIdU(this->id);
             e.setNodeIdV(node->id);
+            this->edges.push(e);
+        }
+
+        void connect(Node* node, Edge e) {
+            int tmp;
+            if(this->id == e.nodeIdV) {
+                tmp = e.nodeIdU;
+                e.setNodeIdU(e.nodeIdV);
+                e.setNodeIdV(tmp);
+            }
             this->edges.push(e);
         }
 
@@ -90,8 +100,8 @@ class Graph {
             a->connect(b, weight);
         }
 
-        void pushEdge(Edge e, Node* u) {
-            u->edges.push(e);
+        void insertEdge(Node* a, Node* b, Edge e) {
+            a->connect(b, e);
         }
 
         bool isConnected() {
@@ -111,26 +121,39 @@ class Graph {
             // dfs
             DynamicArray<Node*> nodesToExplore;
             nodesToExplore.push(first);
+
             while(nodesToExplore.length > 0) {
                 Node* n = nodesToExplore.pop();
 
-                if (explored[n->id]) continue;
-
+                if (explored[n->id]) {
+                    continue;
+                }
                 explored[n->id] = true;
 
                 DynamicArray<Edge> edges = n->edges;
+
                 for(int i = 0; i < edges.length; i++) {
                     Node* nodeEdge = this->getNode(edges[i].nodeIdV);
                     nodesToExplore.push(nodeEdge);
                 }
             }
-
+            int entrei=0;
             for(int i = 0; i < explored.length; i++) {
-                if(!explored[i]) return false;
+                if(!explored[i]) {
+                //     return false;
+                    entrei = 1;
+                } 
+                cout << explored[i] << " ";
                 // for test only, commented
                 // if(explored[i]) printf("true\n");
                 // else printf("false\n");
             }
+                cout << endl << nodes[0]->edges.length << endl;
+                printState();
+
+            if(entrei) return false;
+            // explored.clear(); only for MyDynamicArrayLk
+            cout << "GUIGUIIII" << endl;
             return true;
         }
 
@@ -141,7 +164,7 @@ class Graph {
             int vId = -1;
             for(int i = 0; i < matrix.length; i++) {
                 for(int j = 0; j < matrix.length; j++) {
-                    if (matrix[i][j] > greater && !N[i][j]) {
+                    if (matrix[i][j] > greater && !N[i][j] && i != j) {
                         greater = matrix[i][j];
                         uId = i;
                         vId = j;
@@ -149,6 +172,26 @@ class Graph {
                 }
             }
             e.setWeight(greater);
+            e.setNodeIdU(uId);
+            e.setNodeIdV(vId);
+            return e;
+        }
+
+        Edge getLighterEdge(DynamicArray<DynamicArray<bool>> &N, DynamicArray<DynamicArray<int>> &matrix) {
+            Edge e;
+            int smaller = getHeavierEdge(N, matrix).weight;
+            int uId = -1;
+            int vId = -1;
+            for(int i = 0; i < matrix.length; i++) {
+                for(int j = 0; j < matrix.length; j++) {
+                    if (matrix[i][j] <= smaller && !N[i][j] && i != j) {
+                        smaller = matrix[i][j];
+                        uId = i;
+                        vId = j;
+                    } 
+                }
+            }
+            e.setWeight(smaller);
             e.setNodeIdU(uId);
             e.setNodeIdV(vId);
             return e;
@@ -167,9 +210,7 @@ class Graph {
             }
 
             DynamicArray<Node*> nodesToExplore;
-
             nodesToExplore.push(first);
-
             cout << "Componentes conexas de G:" << endl;
             ofstream WriteFile("output.csv");
             while(nodesToExplore.length > 0) {
@@ -188,9 +229,9 @@ class Graph {
                         printed[u][v] = true;
                         printed[v][u] = true;
                         // simetria por ser nao direcionado
-                    }
-                        Node* nodeV = this->getNode(edges[i].nodeIdV);
-                        nodesToExplore.push(nodeV);
+                    }                    
+                    Node* nodeV = this->getNode(v);
+                    nodesToExplore.push(nodeV);
                 }
             }
             cout << endl;
@@ -317,7 +358,7 @@ int main(int argc, char* argv[]) {
     insertEdges(G);
 
     // for debugging, print state
-    G.printState();
+    // G.printState();
 
     ofstream MyFile("weightsMatrix.csv");
 
@@ -335,19 +376,31 @@ int main(int argc, char* argv[]) {
         cout << "\n";
     }
     MyFile.close();
+    cout << "Weights Matrix generated" << endl;
 
     G.clearEdges();
-    G.printState();
+    // G.printState();
+
+    string m = "M";
+    if(argc == 2) {
+        m = argv[1];
+        cout << "entrei" << endl;
+        cout << m << endl;
+    }
 
     DynamicArray<DynamicArray<bool>> N(nodes_length, DynamicArray<bool>(nodes_length, false));
     cout << "Starting algorithm..." << endl;
     while(!G.isConnected()) {
-        Edge e = G.getHeavierEdge(N, matrix); // pega maior peso não utilizado
-        Node* u = G.getNode(e.nodeIdU);
-        Node* v = G.getNode(e.nodeIdV);
-        G.pushEdge(e, u);
-        G.pushEdge(e, v);
+        cout << "felipe14" << endl;
+        Edge e;
+        if(m.compare("M") == 0) e = G.getHeavierEdge(N, matrix); // pega maior peso não utilizado
+        else if(m.compare("m") == 0) e = G.getLighterEdge(N, matrix); // pega menor peso não utilizado
+        cout << "felipe14.5" << endl;
+        cout << "felipe15" << endl;
+        G.insertEdge(G.getNode(e.nodeIdU), G.getNode(e.nodeIdV), e);
+        G.insertEdge(G.getNode(e.nodeIdV), G.getNode(e.nodeIdU), e);
         N[e.nodeIdU][e.nodeIdV] = true;
+        N[e.nodeIdV][e.nodeIdU] = true;
         G.printConnected();
         // printa sem repetir por ser nao direcionado, ou seja:
         // se do node 0 eu vou pro 2, portanto do 2 para 0, mas apenas escreve 0-->2 ou 2-->0 (dependendo de onde começou)

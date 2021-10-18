@@ -72,6 +72,24 @@ namespace MyDynamicArrayLkSpace
             }
             return tmp->data;
         }
+
+        void clear() {
+            while(head != nullptr) {
+                if(head->next == nullptr) {
+                    DynamicArray* tmp = head;
+                    head = nullptr;
+                    tail = nullptr;
+                    delete tmp;
+                    length = 0;
+                } else {
+                    DynamicArray* aux = tail->prev;
+                    if(aux) aux->next = nullptr;
+                    delete tail;
+                    tail = aux;
+                    length--;
+                }
+            }
+        }
     };
 
     template <class T2>
@@ -125,5 +143,23 @@ namespace MyDynamicArrayLkSpace
                     push(ar);
                 }
             }
+
+            void clear() {
+            while(head != nullptr) {
+                if(head->next == nullptr) {
+                    DynamicArray<DynamicArray<T2>>* tmp = head;
+                    head = nullptr;
+                    tail = nullptr;
+                    delete tmp;
+                    length = 0;
+                } else {
+                    DynamicArray<DynamicArray<T2>>* aux = tail->prev;
+                    if(aux) aux->next = nullptr;
+                    delete tail;
+                    tail = aux;
+                    length--;
+                }
+            }
+        }
     };
 }

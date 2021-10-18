@@ -1,9 +1,0 @@
-<node id="u10337">
-<data key="Idade">0.24</data>
-<data key="Extroversao">0.65</data>
-</node>
-<node id="u10312">
-<data key="Idade">0.24</data>
-<data key="Extroversao">0.825</data>
-</node>
-<edge source="u4335" target="u7822"/>

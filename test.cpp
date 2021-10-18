@@ -1,13 +1,10 @@
-// MathLibrary.cpp
-// compile with: cl /c /EHsc MathLibrary.cpp
-// post-build command: lib MathLibrary.obj
-
-#include "MyDynamicArray.h"
+// arquivo de teste da biblioteca personalizada
+#include "MyDynamicArrayLk.h"
 #include <iostream>
 #include <vector>
 
 using namespace std;
-using namespace MyDynamicArraySpace;
+using namespace MyDynamicArrayLkSpace;
 
 void create1(int length) {
     DynamicArray<bool> printed;
@@ -39,36 +36,19 @@ void create4(int length) {
 int main() {
     DynamicArray<int> array(2, 1);
     array.push(1);
-    array.push(2);
-    array.push(3);
-    array.push(4);
-    for(int i = 0; i < array.length; i++) {
-        array[0] = 10;
-    }
+    array[0] = 10;
     array.pop();
     array.pop();
-    array.push(1);
-
-    // array.pop();
-    // array.push(2);
-    // array.pop();
-    // array.length;
-    // array.push(3);
-    // array.pop();
-    // array.length;
-
-    // array.push(5);
-    // array.push(6);
+    array.pop();
+    array.push(5);
 
     int item = array.pop();
-    int item2 = array.pop();
     array.push(4);
     for(int i = 0; i < array.length; i++) {
         cout << array[i] << endl;
     }
     cout << "fim loop" << endl;
     cout << item << endl;
-    cout << item2 << endl;
 
     printf("Teste 1\n");
     DynamicArray<DynamicArray<bool>> N(3, DynamicArray<bool>(2, false));
@@ -92,9 +72,16 @@ int main() {
         }
         printf("\n");
     }
-    create1(2000);
-    create2(2000);
-    create3(2000);
-    create4(2000);
+    M.clear();
+    M.push(DynamicArray<bool>(3, false));
+    array.clear();
+    array.push(2);
+    array.push(3);
+    cout << array[0] << endl;
+    cout << array[1] << endl;
+    // create1(2000);
+    // create2(2000);
+    // create3(2000);
+    // create4(2000);
     return 0;
 }

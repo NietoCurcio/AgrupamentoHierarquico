@@ -64,6 +64,16 @@ class Node {
             this->edges.push(e);
         }
 
+        void connect(Node* node, Edge e) {
+            int tmp;
+            if(this->id == e.nodeIdV) {
+                tmp = e.nodeIdU;
+                e.setNodeIdU(e.nodeIdV);
+                e.setNodeIdV(tmp);
+            }
+            this->edges.push(e);
+        }
+
         // bool hasEdgeConnectedTo(int nodeIdV) {
         //     DynamicArray<Edge> es = edges;
         //     for(int i = 0; i < es.length; i++) {
@@ -132,6 +142,10 @@ class Graph {
             a->connect(b, weight);
         }
 
+        void insertEdge(Node* a, Node* b, Edge e) {
+            a->connect(b, e);
+        }
+
         void pushEdge(Edge e, Node* u) {
             u->edges.push(e);
         }
@@ -160,7 +174,10 @@ class Graph {
 
                 DynamicArray<Edge> edges = n->edges;
                 for(int i = 0; i < edges.length; i++) {
-                    Node* nodeEdge = this->getNode(edges[i].nodeIdV);
+                    int u = edges[i].nodeIdU;
+                    int v = edges[i].nodeIdV;
+                    int getId = (n->id != u) ? u : v;
+                    Node* nodeEdge = this->getNode(getId);
                     nodesToExplore.push(nodeEdge);
                 }
             }
@@ -168,6 +185,7 @@ class Graph {
             for(int i = 0; i < explored.length; i++) {
                 if(!explored[i]) return false;
             }
+            // explored.clear(); // only for MyDynamicArrayLk
             return true;
         }
 
@@ -186,9 +204,10 @@ class Graph {
         }
 
         void printConnected() {
-            bool printed[nodes_length][nodes_length] = {{false}};
-            bool explored[nodes_length] = {false};
+            bool printed[500][500] = {{false}};
+            bool explored[500] = {false};
             Node* first = nullptr;
+
             for(int i = 0; i < nodes.length; i++) {
                  if (nodes[i]->edges.length) {
                      first = nodes[i];
@@ -213,8 +232,18 @@ class Graph {
                 for(int i = 0; i < edges.length; i++) {
                     int uIndex = index;
                     int vIndex = getNodeIdx(edges[i].nodeIdV);
+                    int abc = getNodeIdx(edges[i].nodeIdU);
+                    if(uIndex == vIndex) {
+                        cout << "FELIPEEEEEEEEEEEEE" << endl;
+                    }
+                    if(abc != uIndex) {
+                        cout << "guigui" << endl;
+                    }
+
                     if(!printed[uIndex][vIndex]) {
                         // cout << u << "-->" << v << " ";
+                        // cout << "felipe12" << endl;
+
                         WriteFile << uIndex << "-->" << vIndex << ",";
                         printed[uIndex][vIndex] = true;
                         printed[vIndex][uIndex] = true;
@@ -237,6 +266,7 @@ class Graph {
                     if(edgeIndex != -1) {
                         Edge e = node->edges[edgeIndex];
                         n[i][j] = e.weight;
+                        if(n[i][j] == 0) n[i][j] = 0.001;
                         k++;
                     }
                     if(k == node->edges.length) break;
@@ -371,10 +401,11 @@ void insertEdges(Graph &G) {
             // "Observe que os pesos para as arestas podem ser calculados de maneira aleatória"
             // Professor, decidi fazer o peso sendo a distancia euclidiana entre um node e outro
             // ou seja, distancia entre dois vetores bidimensionais (idade e extroversao)
+            // Dessa forma, faço uso da informação idade e extroversão
             Node* nodeu = G.getNode(uId);
             Node* nodev = G.getNode(vId);
-            double idadeDif = (nodeu->idade - nodev->idade)*10;
-            double extroversaoDif = (nodeu->extroversao - nodev->extroversao)*10;
+            double idadeDif = (nodeu->idade - nodev->idade);
+            double extroversaoDif = (nodeu->extroversao - nodev->extroversao);
             idadeDif *= idadeDif;
             extroversaoDif *= extroversaoDif;
             double euclideanDistance = sqrt(idadeDif + extroversaoDif);
@@ -409,6 +440,7 @@ int main(int argc, char* argv[]) {
         // cout << "\n";
     }
     MyFile.close();
+    // matrix.clear(); only for MyDynamicArrayLk
     cout << "Weights Matrix generated" << endl;
 
     DynamicArray<Edge> edges = G.clearEdges();
@@ -416,7 +448,7 @@ int main(int argc, char* argv[]) {
 
     // G.printState();
 
-    bool N[edges.length] = {false};
+    bool* N = new bool[edges.length]{};
     cout << "Running algorithm..." << endl;
     while(!G.isConnected()) {
         // no questao5e6_v2.cpp, os id's são iguais a seus indices,
@@ -424,14 +456,13 @@ int main(int argc, char* argv[]) {
         // portanto, alterei as funções "isConnected", "getHeavierEdge", "printConnected" e "clearEdges"
         int edgeIndex = G.getHeavierEdge(N, edges);
         Edge e = edges[edgeIndex];
-        Node* u = G.getNode(e.nodeIdU);
-        Node* v = G.getNode(e.nodeIdV);
-        G.pushEdge(e, u);
-        G.pushEdge(e, v);
+        G.insertEdge(G.getNode(e.nodeIdU), G.getNode(e.nodeIdV), e);
+        G.insertEdge(G.getNode(e.nodeIdV), G.getNode(e.nodeIdU), e);
         N[edgeIndex] = true;
         G.printConnected();
     }
     cout << "Output generated" << endl;
     // G.printState();
+    delete[] N;
     return 0;
 }
