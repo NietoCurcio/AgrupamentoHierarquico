@@ -66,7 +66,7 @@ e gera as imagens:
   <img src="./Graph.png" height="550" alt="Graph">
 </p>
 
-- "GraphOutput.png", correspondente a "output.csv"
+- "GraphOutput.png", correspondente a "output.csv" (saída do algoritmo de agrupamento hierárquico)
 
 <p align="center">
   <img src="./GraphOutput.png" height="550" alt="Graph Output">
@@ -79,7 +79,7 @@ Analogamente, o arquivo "dataVisualizerQ7.py" gera as imagens:
   <img src="./GraphFromDataset.png" height="550" alt="Graph Output">
 </p>
 
-- "GraphOutputFromDataset.png"
+- "GraphOutputFromDataset.png" (saída do algoritmo de agrupamento hierárquico, que teve como entrada o dataset MQD500.graphml)
 
 <p align="center">
   <img src="./GraphOutputFromDataset.png" height="550" alt="Graph Output">
