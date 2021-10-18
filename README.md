@@ -1,6 +1,6 @@
 # Projeto final matematica discreta - CEFET/RJ, Prof: Diego Brandão.
 
-> Projeto final matematica discreta: implemtação do algoritmo de grupamento hierarquico, livro: Hunter, D.J. Fundamentos da Matemática Discreta
+> Projeto final matematica discreta: implemtação do algoritmo de agrupamento hierárquico, livro: Hunter, D.J. Fundamentos da Matemática Discreta
 
 ## MyDynamicArrayRealloc.h e MyDynamicArrayLk.h
 
