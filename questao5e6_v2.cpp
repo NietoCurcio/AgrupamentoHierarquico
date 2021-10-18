@@ -153,7 +153,6 @@ class Graph {
 
             if(entrei) return false;
             // explored.clear(); only for MyDynamicArrayLk
-            cout << "GUIGUIIII" << endl;
             return true;
         }
 
@@ -382,21 +381,14 @@ int main(int argc, char* argv[]) {
     // G.printState();
 
     string m = "M";
-    if(argc == 2) {
-        m = argv[1];
-        cout << "entrei" << endl;
-        cout << m << endl;
-    }
+    if(argc == 2) m = argv[1];
 
     DynamicArray<DynamicArray<bool>> N(nodes_length, DynamicArray<bool>(nodes_length, false));
     cout << "Starting algorithm..." << endl;
     while(!G.isConnected()) {
-        cout << "felipe14" << endl;
         Edge e;
         if(m.compare("M") == 0) e = G.getHeavierEdge(N, matrix); // pega maior peso não utilizado
         else if(m.compare("m") == 0) e = G.getLighterEdge(N, matrix); // pega menor peso não utilizado
-        cout << "felipe14.5" << endl;
-        cout << "felipe15" << endl;
         G.insertEdge(G.getNode(e.nodeIdU), G.getNode(e.nodeIdV), e);
         G.insertEdge(G.getNode(e.nodeIdV), G.getNode(e.nodeIdU), e);
         N[e.nodeIdU][e.nodeIdV] = true;

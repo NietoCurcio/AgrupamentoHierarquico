@@ -177,6 +177,7 @@ class Graph {
                     int u = edges[i].nodeIdU;
                     int v = edges[i].nodeIdV;
                     int getId = (n->id != u) ? u : v;
+                    if(n->id != u) cout << "MAMAE" << endl;
                     Node* nodeEdge = this->getNode(getId);
                     nodesToExplore.push(nodeEdge);
                 }
@@ -232,13 +233,6 @@ class Graph {
                 for(int i = 0; i < edges.length; i++) {
                     int uIndex = index;
                     int vIndex = getNodeIdx(edges[i].nodeIdV);
-                    int abc = getNodeIdx(edges[i].nodeIdU);
-                    if(uIndex == vIndex) {
-                        cout << "FELIPEEEEEEEEEEEEE" << endl;
-                    }
-                    if(abc != uIndex) {
-                        cout << "guigui" << endl;
-                    }
 
                     if(!printed[uIndex][vIndex]) {
                         // cout << u << "-->" << v << " ";
