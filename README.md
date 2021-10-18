@@ -50,7 +50,7 @@ g++ questao7extra.cpp -o questao7extra.exe
 ```
 
 ```shell
-./questao7.exe
+./questao7extra.exe
 ```
 
 Assim como a questao 5 e 6, gera os arquivos "weightsMatrixFromDataset.csv" e "outputFromDataset.csv"
@@ -89,4 +89,4 @@ Analogamente, o arquivo "dataVisualizerQ7.py" gera as imagens:
 
 O grafo que é gerado a partir do dataset MQD500.graphml tem 3896 arestas, mas a forma atual do código processa a aresta de A para B e armazena no array de arestas de A, de B para A e guarda no array de arestas de B. Uma abordagem em que é criado um Id único para cada aresta e é armazenado esse Id no node A e B parece ser interessante, assim apenas terão 3896 instâncias de Edge.
 
-Também seria interessante em vez de criar um objeto Graph, que contem objetos Node e cada Node contém objetos Edge, implementar um [Hash Table](https://en.wikipedia.org/wiki/Hash_table), em outras palavras, um array de Linked List, em que o Id de um determinado node seria o Hash para selecionar a devida lista encadeada. A partir do node "Head" de uma Linked list, se ele aponta para "NULL" ou "nullptr", indica que ele não tem arestas, se ele aponta para outro Node, indica que ele possui uma aresta com esse node e a informação do node pode ser guardada neste node de origem.
+Também seria interessante em vez de criar um objeto Graph, que contem objetos Node e cada Node contém objetos Edge, implementar um [Hash Table](https://en.wikipedia.org/wiki/Hash_table), em outras palavras, um array de Linked List, em que o Id de um determinado node seria o Hash para selecionar a devida lista encadeada. A partir do node "Head" de uma Linked list, se ele aponta para "NULL" ou "nullptr", indica que ele não tem arestas, se ele aponta para outro Node, indica que ele possui uma aresta com esse node e a informação peso pode ser guardada neste node de origem.
