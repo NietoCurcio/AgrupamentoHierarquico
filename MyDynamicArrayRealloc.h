@@ -1,8 +1,11 @@
-// Biblioteca personalizada para arrays dinamicos, usada no arquivo questao5_v2.cpp
+// Módulo para arrays dinamicos, usada no arquivo questao5_v2.cpp
 #pragma once
 #include<iostream>
 
-// Professor, criei essa biblioteca para criar um array dinamico.
+// Professor, criei esse módulo para criar um array dinamico. Funciona por meio da função calloc
+// e realloc, as usei em um projeto de PAC e trouxe para este projeto. A função calloc é parecida
+// com malloc, mas seu formato é calloc(tamanho, tamanho do tipo),
+// e realloc, realloc(ponteiro a ser realocado, novo tamanho)
 
 // referencias:
 // https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=msvc-160
@@ -47,7 +50,7 @@ namespace MyDynamicArrayReallocSpace
             T item = array[this->length - 1];
             this->length -= 1;
             if (length == 0) {
-                // delete[] array;, onlyr for "new" keyword
+                // delete[] array; somente para "new" keyword
                 free(array);
                 array = (T*)calloc(0, sizeof(T));
             } 

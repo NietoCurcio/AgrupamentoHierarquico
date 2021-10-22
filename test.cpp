@@ -1,4 +1,4 @@
-// arquivo de teste das bibliotecas personalizadas
+// arquivo de teste dos módulos
 #include "MyDynamicArrayLk.h"
 // #include "MyDynamicArrayRealloc.h"
 #include <iostream>

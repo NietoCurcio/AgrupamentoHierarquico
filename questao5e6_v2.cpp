@@ -1,7 +1,7 @@
 // QUESTAO 5 PROJETO FINAL
 // GRUPO - Felipe Curcio, Rodrigo Parracho
 #include<iostream> // Biblioteca padrao de entrada e saida
-#include "MyDynamicArrayRealloc.h" // Essa biblioteca foi implementada por mim no arquivo MyDynamicArrayRealloc.h
+#include "MyDynamicArrayRealloc.h" // Módulo implementado por mim no arquivo MyDynamicArrayRealloc.h
 #include <fstream> // Essa biblioteca é apenas para leitura e escrita de arquivos
 
 using namespace std;

@@ -4,9 +4,9 @@ Disciplina de Matématica Discreta, ministrada pelo professor Diego Brandão, do
 
 > Implementação do algoritmo de agrupamento hierárquico. Referência: Hunter, D.J. Fundamentos da Matemática Discreta
 
-## MyDynamicArrayRealloc.h e MyDynamicArrayLk.h
+## Módulos MyDynamicArrayRealloc.h e MyDynamicArrayLk.h
 
-Esses arquivos são bibliotecas personalizadas. A versão utilizada é a "MyDynamicArrayRealloc.h", que faz alocação dinamica de arrays na memoria com "calloc" (contiguous memory allocation memory) e "realloc" (reallocate memory). A outra versão ("MyDynamicArrayLk.h"), implementa uma _Doubly Linked list_, e gera o mesmo resultado, porém o algoritmo demora muito mais (maior complexidade de tempo), visto que é perdido a propriedade de acesso aleatório de arrays. Portanto, por ser mais rápida, a biblioteca "MyDynamicArrayRealloc" é a utilizada.
+A versão utilizada é a "MyDynamicArrayRealloc.h", que faz alocação dinamica de arrays na memoria com "calloc" (contiguous memory allocation memory) e "realloc" (reallocate memory). A outra versão ("MyDynamicArrayLk.h"), implementa uma _Doubly Linked list_, e gera o mesmo resultado, porém o algoritmo demora muito mais (maior complexidade de tempo), visto que é perdido a propriedade de acesso aleatório de arrays. Portanto, por ser mais rápida, o módulo "MyDynamicArrayRealloc" é o utilizado.
 
 O peso entre as arestas na questão 5 e 6 é inserido de acordo com a imagem "nodesMapa.png".
 

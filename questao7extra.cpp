@@ -11,8 +11,8 @@
     Como os id's são definidos pelo dataset, houveram diversas adaptações no código.
 */ 
 #include<iostream> // Biblioteca padrao de entrada e saida
-// #include "MyDynamicArrayLk.h" // Essa biblioteca foi implementada por mim no arquivo MyDynamicArrayRealloc.h
-#include "MyDynamicArrayRealloc.h" // Essa biblioteca foi implementada por mim no arquivo MyDynamicArrayRealloc.h
+// #include "MyDynamicArrayLk.h"
+#include "MyDynamicArrayRealloc.h" // Módulo implementado por mim no arquivo MyDynamicArrayRealloc.h
 #include <fstream> // Essa biblioteca é para leitura e escrita de arquivos
 #include <string> // Biblioteca necessaria para leitura de arquivos em c++ (função getline)
 #include <cmath> // Usada apenas na função sqrt(), para calcular a distancia euclidiana.
