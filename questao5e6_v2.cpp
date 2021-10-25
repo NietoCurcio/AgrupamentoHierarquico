@@ -342,7 +342,7 @@ void insertEdges(Graph &G) {
 }
 
 void insertEdgesFromInput(Graph &G) {
-    // deverão ser realizados testes com diferentes valores dos parâmetros
+    // "deverão ser realizados testes com diferentes valores dos parâmetros"
     int weight;
     int uId;
     int vId;
