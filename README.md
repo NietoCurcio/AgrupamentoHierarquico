@@ -21,25 +21,36 @@ g++ questao5e6_v2.cpp -o questao5e6_v2.exe
 ```
 
 ```shell
-./questao5e6_v2.exe M
+./questao5e6_v2.exe
 ```
 
-- 'M' é o argumento informando ao algoritmo que será usado o maior peso. Argumento opcional,
-  o default eh pegar o maior peso.
+ou
 
 ```shell
-./questao5e6_v2.exe m
+./questao5e6_v2.exe -w M -i n
 ```
 
-- 'm', argumento que informa ao algoritmo para usar o menor peso. Referente à questão 6.
+"-w" e "-i" são argumentos opcionais. Os valores default para -w (weight) e -i (input from user) são, respectivamente, "M" (pegar o maior peso) e "n" (não esperar entrada do usuário, usar o grafo da imagem "nodesMapa2.png").
+
+- "-w M" será usado o maior peso entre arestas.
+- "-w m" será usado o menor peso entre arestas. Referente à questão 6.
+
+- '-i n' o programa não espera entrada do usuário, o grafo é gerado a partir da imagem "nodesMapa2.png".
+- '-i y' o programa espera entrada do usuário, o usuário insere o número de vértices no grafo, e arestas até que o peso da aresta inserida seja "-1".
+
+Questão 6:
+
+```shell
+./questao5e6_v2.exe -w m -i n
+```
 
 Após executar o código, serão gerados dois arquivos csv: "weightsMatrix.csv" e "output.csv"
 
 - "weightsMatrix.csv" é a matriz de pesos do grafo que foi inserido, neste caso
-  corresponde ao grafo na imagem nodesMapa.png
+  corresponde ao grafo na imagem nodesMapa2.png (ou o grafo inserido pelo usuário).
 
 - "output.csv" é a saída do algoritmo, no caso da questao5e6 a saída é printada no console
-  (como mostrado no algortimo no livro) e também é escrita nesse arquivo. Na questão 7, é
+  (como mostrado no algoritmo no livro) e também é escrita nesse arquivo. Na questão 7, é
   apenas escrito o arquivo (não é printado no console), pois, por ter uma grande quantidade de
   vértices e arestas fica dificil de visualizar a saída.
 

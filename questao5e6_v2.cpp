@@ -1,4 +1,4 @@
-// QUESTAO 5 PROJETO FINAL
+// QUESTAO 5 e 6 PROJETO FINAL
 // GRUPO - Felipe Curcio, Rodrigo Parracho
 #include<iostream> // Biblioteca padrao de entrada e saida
 #include "MyDynamicArrayRealloc.h" // Módulo implementado por mim no arquivo MyDynamicArrayRealloc.h
@@ -79,7 +79,12 @@ class Graph {
         int nodes_length;
         DynamicArray<Node*> nodes;
 
+        Graph() {}
         Graph(int n_length) : nodes_length(n_length) {}
+
+        void setNodesLength(int length) {
+            this->nodes_length = length;
+        }
 
         Node* getNode(int id) {
             Node* node;
@@ -336,16 +341,63 @@ void insertEdges(Graph &G) {
     G.insertEdge(G.getNode(12), G.getNode(11), 14);
 }
 
-int main(int argc, char* argv[]) {
-    int nodes_length = 13;
+void insertEdgesFromInput(Graph &G) {
+    // deverão ser realizados testes com diferentes valores dos parâmetros
+    int weight;
+    int uId;
+    int vId;
+    cout << endl;
+    cout << "=== Get graph from user ===" << endl;
+    cout << "Example input:" << endl;
+    cout << "5 for weight, 0 for U id and 1 for V id" << endl;
+    cout << "The edge between V (node 1) and U (node 0) will be automatically inserted" << endl;
+    cout << endl;
+    while(true) {
+        cout << "Insert weight for edge, entry -1 will stop:" << endl;
+        cin >> weight;
+        if(weight == -1) break;
+        cout << "Insert node U id, values between " << 0 << " and " << G.nodes_length - 1 << endl;
+        cin >> uId;
+        cout << "Insert node V id, values between " << 0 << " and " << G.nodes_length - 1 << endl;
+        cin >> vId;
+        G.insertEdge(G.getNode(uId), G.getNode(vId), weight);
+        G.insertEdge(G.getNode(vId), G.getNode(uId), weight);
+    }
+}
 
-    Graph G(13);
+void getArgv(int argc, char* argv[], string &weight, string &input) {
+    if(argc == 1) return;
+    for(int i = 0; i < argc; i++) {
+        for(int j = 0; argv[i][j] != '\0'; j++) {
+            if(argv[i][j] == '-') {
+                if(argv[i][j+1] == 'w') weight = argv[i + 1];
+                if(argv[i][j+1] == 'i') input = argv[i + 1];
+            }
+        }
+    }
+}
+
+int main(int argc, char* argv[]) {
+    int nodes_length;
+    Graph G;
+    string weight = "M";
+    string input_from_user = "n";
+    getArgv(argc, argv, weight, input_from_user);
+
+    if(input_from_user.compare("n") == 0) nodes_length = 13;
+    else {
+        cout << "Insert the number of vertices in the Graph:" << endl;
+        cin >> nodes_length;
+    }
+
+    G.setNodesLength(nodes_length);
     for(int i = 0; i < G.nodes_length; i++) {
         Node* n = new Node(i);
         G.insertNode(n);
     }
 
-    insertEdges(G);
+    if(input_from_user.compare("n") == 0) insertEdges(G);
+    else insertEdgesFromInput(G);
 
     // for debugging, print state
     // G.printState();
@@ -371,15 +423,12 @@ int main(int argc, char* argv[]) {
     G.clearEdges();
     // G.printState();
 
-    string m = "M";
-    if(argc == 2) m = argv[1];
-
     DynamicArray<DynamicArray<bool>> N(nodes_length, DynamicArray<bool>(nodes_length, false));
     cout << "Starting algorithm..." << endl;
     while(!G.isConnected()) {
         Edge e;
-        if(m.compare("M") == 0) e = G.getHeavierEdge(N, matrix); // pega maior peso não utilizado
-        else if(m.compare("m") == 0) e = G.getLighterEdge(N, matrix); // pega menor peso não utilizado
+        if(weight.compare("M") == 0) e = G.getHeavierEdge(N, matrix); // pega maior peso não utilizado
+        else if(weight.compare("m") == 0) e = G.getLighterEdge(N, matrix); // pega menor peso não utilizado
         G.insertEdge(G.getNode(e.nodeIdU), G.getNode(e.nodeIdV), e);
         G.insertEdge(G.getNode(e.nodeIdV), G.getNode(e.nodeIdU), e);
         N[e.nodeIdU][e.nodeIdV] = true;

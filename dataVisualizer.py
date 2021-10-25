@@ -22,7 +22,7 @@ nx.draw(G, with_labels=True)
 plt.savefig("Graph.png", format="PNG")
 plt.clf()
 
-output = np.array([[0 for _ in range(13)] for _ in range(13)])
+output = np.array([[0 for _ in range(A.shape[0])] for _ in range(A.shape[0])])
 with open('output.csv', 'r') as r:
     reader, = csv.reader(r, delimiter=',')
     # print(reader)
