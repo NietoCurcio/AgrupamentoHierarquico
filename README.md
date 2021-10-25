@@ -71,6 +71,10 @@ Assim como a questao 5 e 6, gera os arquivos "weightsMatrixFromDataset.csv" e "o
 Os arquivos ".csv" gerados pelo código em c++, são lidos pelo código em python "dataVisualizer.py"
 e gera as imagens:
 
+```shell
+python dataVisualizer.py
+```
+
 - "Graph.png" correspondente a "weightsMatrix.csv"
 
 <p align="center">
@@ -84,6 +88,10 @@ e gera as imagens:
 </p>
 
 Analogamente, o arquivo "dataVisualizerQ7.py" gera as imagens:
+
+```shell
+python dataVisualizerQ7.py
+```
 
 - "GraphFromDataset.png"
 <p align="center">
