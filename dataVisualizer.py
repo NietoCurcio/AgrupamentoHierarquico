@@ -20,12 +20,17 @@ print(A)
 print(A.shape)
 
 G = nx.from_numpy_matrix(A)
-for i in range(A.shape[0]):
-    for j in range(A.shape[0]):
-        if i != j:
-            G.edges[i, j]['weight'] = A[i][j]
+# for i in range(A.shape[0]):
+#     for j in range(A.shape[0]):
+#         if i != j:
+#             G.edges[i, j]['weight'] = A[i][j]
+
+G.edges[0,1]['weight'] = 5
+G.edges[0,2]['weight'] = 10
+G.edges[1,2]['weight'] = 15
 
 
+print(G.edges(data=True))
 
 print("Graph inserted")
 print(G)
@@ -33,6 +38,7 @@ fig = plt.figure(figsize=(3, 3))
 nx.draw(G, with_labels=True)
 if(args.verbose == 'y'):
     labels = nx.get_edge_attributes(G,'weight')
+    print(labels)
     nx.draw_networkx_edge_labels(G, pos=nx.spring_layout(G), edge_labels=labels)
 plt.savefig("Graph.png", format="PNG")
 plt.clf()
