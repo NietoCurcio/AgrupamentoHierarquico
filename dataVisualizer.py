@@ -2,6 +2,11 @@ import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
+import argparse
+
+parser = argparse.ArgumentParser(description='Graph Visualizer')
+parser.add_argument('-v','--verbose', help='Show weights in graph from adjacency matrix [y]', required=False)
+args = parser.parse_args()
 
 A = []
 with open('weightsMatrix.csv', 'r') as f:
@@ -15,10 +20,20 @@ print(A)
 print(A.shape)
 
 G = nx.from_numpy_matrix(A)
+for i in range(A.shape[0]):
+    for j in range(A.shape[0]):
+        if i != j:
+            G.edges[i, j]['weight'] = A[i][j]
+
+
+
 print("Graph inserted")
 print(G)
-fig = plt.figure(figsize=(10, 10))
+fig = plt.figure(figsize=(3, 3))
 nx.draw(G, with_labels=True)
+if(args.verbose == 'y'):
+    labels = nx.get_edge_attributes(G,'weight')
+    nx.draw_networkx_edge_labels(G, pos=nx.spring_layout(G), edge_labels=labels)
 plt.savefig("Graph.png", format="PNG")
 plt.clf()
 
@@ -36,6 +51,6 @@ with open('output.csv', 'r') as r:
 outputGraph = nx.Graph(output)
 print("Graph output from dataset")
 print(outputGraph)
-fig = plt.figure(figsize=(10, 10))
+fig = plt.figure(figsize=(3, 3))
 nx.draw(outputGraph, with_labels=True)
 plt.savefig("GraphOutput.png", format="PNG")
