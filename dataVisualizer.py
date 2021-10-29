@@ -20,17 +20,6 @@ print(A)
 print(A.shape)
 
 G = nx.from_numpy_matrix(A)
-# for i in range(A.shape[0]):
-#     for j in range(A.shape[0]):
-#         if i != j:
-#             G.edges[i, j]['weight'] = A[i][j]
-
-G.edges[0,1]['weight'] = 5
-G.edges[0,2]['weight'] = 10
-G.edges[1,2]['weight'] = 15
-G.nodes[0]['pos'] = (0,0)
-G.nodes[1]['pos'] = (1,1)
-G.nodes[2]['pos'] = (0,-1)
 
 print(G.edges(data=True))
 
