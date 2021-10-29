@@ -179,7 +179,7 @@ class Graph {
             int vId = -1;
             for(int i = 0; i < matrix.length; i++) {
                 for(int j = 0; j < matrix.length; j++) {
-                    if (matrix[i][j] <= smaller && !N[i][j] && i != j) {
+                    if (matrix[i][j] <= smaller && !N[i][j] && i != j && matrix[i][j] != 0) {
                         smaller = matrix[i][j];
                         uId = i;
                         vId = j;
