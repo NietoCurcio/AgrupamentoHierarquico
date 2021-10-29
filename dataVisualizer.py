@@ -5,7 +5,7 @@ import csv
 import argparse
 
 parser = argparse.ArgumentParser(description='Graph Visualizer')
-parser.add_argument('-v','--verbose', help='Show weights in graph from adjacency matrix [y]', required=False)
+parser.add_argument('-v','--verbose', help='Show weights in graph from adjacency matrix [true]', required=False)
 args = parser.parse_args()
 
 A = []
@@ -28,18 +28,21 @@ G = nx.from_numpy_matrix(A)
 G.edges[0,1]['weight'] = 5
 G.edges[0,2]['weight'] = 10
 G.edges[1,2]['weight'] = 15
-
+G.nodes[0]['pos'] = (0,0)
+G.nodes[1]['pos'] = (1,1)
+G.nodes[2]['pos'] = (0,-1)
 
 print(G.edges(data=True))
 
 print("Graph inserted")
 print(G)
-fig = plt.figure(figsize=(3, 3))
-nx.draw(G, with_labels=True)
-if(args.verbose == 'y'):
+fig = plt.figure(figsize=(5, 5))
+# nx.draw_networkx(G, with_labels=True)
+pos=nx.spring_layout(G)
+nx.draw(G, pos, with_labels=True)
+if(args.verbose == 'true'):
     labels = nx.get_edge_attributes(G,'weight')
-    print(labels)
-    nx.draw_networkx_edge_labels(G, pos=nx.spring_layout(G), edge_labels=labels)
+    nx.draw_networkx_edge_labels(G, pos=pos, edge_labels=labels)
 plt.savefig("Graph.png", format="PNG")
 plt.clf()
 
@@ -57,6 +60,6 @@ with open('output.csv', 'r') as r:
 outputGraph = nx.Graph(output)
 print("Graph output from dataset")
 print(outputGraph)
-fig = plt.figure(figsize=(3, 3))
+fig = plt.figure(figsize=(5, 5))
 nx.draw(outputGraph, with_labels=True)
 plt.savefig("GraphOutput.png", format="PNG")
