@@ -1,6 +1,6 @@
-# Projeto final Matemática Discreta
+# Agrupamento Hierárquico - Matemática Discreta
 
-Disciplina de Matématica Discreta, ministrada pelo professor Diego Brandão, do curso de Ciência da Computação - CEFET/RJ.
+Projeto final da disciplina de Matématica Discreta, ministrada pelo professor Diego Brandão, do curso de Ciência da Computação - CEFET/RJ.
 
 > Implementação do algoritmo de agrupamento hierárquico. Referência: Hunter, D.J. Fundamentos da Matemática Discreta
 
